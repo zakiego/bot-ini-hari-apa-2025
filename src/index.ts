@@ -1,5 +1,5 @@
 import { rwClient } from "./lib/twitter";
-import { format } from 'date-fns-tz';
+import { format, formatInTimeZone } from 'date-fns-tz';
 
 async function main() {
   console.log("Starting the process to tweet the day's name...");
@@ -9,11 +9,15 @@ async function main() {
       "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"
     ];
     
-    const timeZone = 'Asia/Makassar'; // GMT+8
+    const timeZone = 'Asia/Jakarta'; // WIB is GMT+7
     const now = new Date();
+    const nowInTimeZone = formatInTimeZone(now, timeZone, 'yyyy-MM-dd HH:mm:ss.SSS zzz');
+
+    console.log(`System time (UTC): ${now.toISOString()}`);
+    console.log(`Formatted time in ${timeZone}: ${nowInTimeZone}`);
     
     // 'i' returns the ISO day of the week, where 1 is Monday and 7 is Sunday.
-    const dayOfWeek = parseInt(format(now, 'i', { timeZone }), 10);
+      const dayOfWeek = parseInt(format(nowInTimeZone, 'i', { timeZone }), 10);
     
     // We need to convert this to an index where Sunday is 0.
     // getDay() format: Sunday = 0, Monday = 1, ..., Saturday = 6
