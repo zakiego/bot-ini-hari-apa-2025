@@ -1,0 +1,26 @@
+name: Pull Data
+
+on:
+  schedule:
+    - cron: "0 2 * * *" # 02:00 UTC = 09:00 WIB (UTC+7) = 10:00 WITA (UTC+8)
+  workflow_dispatch:
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install
+      - run: bun run src/index.ts
+
+      - name: Update Last Updated
+        run: |
+          d=`date '+%Y-%m-%dT%H:%M:%SZ'`
+          echo $d > LAST_UPDATED
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          commit_message: "Update Last Updated"
