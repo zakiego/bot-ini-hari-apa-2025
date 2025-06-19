@@ -1,4 +1,4 @@
-name: Pull Data
+name: Tweet
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  pull:
+  tweet:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
